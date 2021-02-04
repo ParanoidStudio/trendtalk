@@ -1,0 +1,45 @@
+{
+  "name": "mrfeathers/php-fpcalc",
+  "description": "PHP wrapper for command-line fingerprint generator - fpcalc",
+  "type": "library",
+  "keywords": [
+    "chromaprint",
+    "fpcalc",
+    "acoustid",
+    "music",
+    "fingerprint",
+    "php",
+    "library"
+  ],
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Olga Nikolaeva",
+      "email": "featherman101@gmail.com",
+      "homepage": "https://www.linkedin.com/in/olganiko",
+      "role": "developer"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^6.0",
+    "mockery/mockery": "^1.0"
+  },
+  "require": {
+    "php": ">=7.1",
+    "symfony/process": "^4.0"
+  },
+  "suggest": {
+    "mrfeathers/acoustid": "Object Oriented PHP Wrapper for acoustid.org API"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Fpcalc\\": "src/"
+    }
+  }
+}
