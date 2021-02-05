@@ -18,7 +18,7 @@ $(document).ready(() => {
 	initialPageBuild();
 
 	loadVideos(12);
-	setTimeout( loadVideos(85), 1000);
+	// setTimeout( loadVideos(85), 1000);
 });
 
 
@@ -101,7 +101,7 @@ function initialPageBuild(){
 	for(let i = 1; i <= maxPage; ++i){
 		let isGray = '';
 		if(i%2==0) isGray = 'gray';
-		$('#fullpage').append("<div class='section trends-videos "+isGray+"' data-pg='"+i+"'>" +
+		$('#lightFullPage').append("<div class='section trends-videos "+isGray+"' data-pg='"+i+"'>" +
 								"<div class='container'>" +
 									"<div class='trends-videos__inner' data-page='" + i + "'>");
 		
@@ -198,26 +198,9 @@ function initialPageBuild(){
 		}
 
 
-		$('#fullpage').append("</div></div></div>");
+		$('#lightFullPage').append("</div></div></div>");
 	}
 
-	$("#fullpage").append('<div class="section trends-videos" id="clearfix"></div>');
-
-	$('#fullpage').fullpage({
-		//options here
-		
-		scrollHorizontally: true,
-
-		lazyLoading: true,
-			//Скроллинг
-
-		//Доступ
-		keyboardScrolling: true,
-		animateAnchor: true,
-		recordHistory: true,
-			// parallax: true,
-			// anchors: ['section1']
-	});
 
 }
 

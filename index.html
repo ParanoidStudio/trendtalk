@@ -7,66 +7,73 @@
 	</title>
 	<link rel="stylesheet" type="text/css" href="css/normalize.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/fullpage.css">
+	<!-- <link rel="stylesheet" type="text/css" href="css/fullpage.css"> -->
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-	<script type="text/javascript" src="js/fullpage.js"></script>
+	<!-- <script type="text/javascript" src="js/fullpage.js"></script> -->
 	<script type="text/javascript" src="js/jsonvideoloader.js"></script>
 </head>
-<body>
 
-	<header class="header">
+<body>
+	<div class="wrapParalax">
+		<header class="header">
 		<div class="container">
 			<a class="header-link" href="#">
 				<p class="header-link_text">Trend</p>
 				<span class="header-link_text">Talk</span>
 			</a>
 		</div>	
-	</header>
-	<section class="trends">
+		</header>
+		<section class="trends">
 
-		<div class="container">
-			<!-- <div id="lottie" style="width: 100px; height: 100px;"></div> -->
-			<div class="trends__inner">
-				<div class="trends__inner-content">
-					<h1 class="trends__inner-content__main-title">
-						Поговорим о трендах
-					</h1>
-					<div class="trends__inner-content__content">
-						<b class="trends__inner-content__content-title">
-							О, здаров!
-						</b>
-						<p class="trends__inner-content__content__content-text">
-							Короче, подогнал тебе наиболее популярные ролики из TikTok. Будь в тренде. Вдохновляйся увиденным, создавай свои тренды сам!
-						</p>
-						
+			<div class="container">
+				<!-- <div id="lottie" style="width: 100px; height: 100px;"></div> -->
+				<div class="trends__inner">
+					<div class="trends__inner-content">
+						<h1 class="trends__inner-content__main-title">
+							Поговорим о трендах
+						</h1>
+						<div class="trends__inner-content__content">
+							<b class="trends__inner-content__content-title">
+								О, здаров!
+							</b>
+							<p class="trends__inner-content__content__content-text">
+								Короче, подогнал тебе наиболее популярные ролики из TikTok. Будь в тренде. Вдохновляйся увиденным, создавай свои тренды сам!
+							</p>
+							
+						</div>
+						<a href="#section1" class="btn_scroll-down"><img width="40" src="images/arrow-down.svg"></a>
 					</div>
-					<a href="#section1" class="btn_scroll-down"><img width="40" src="images/arrow-down.svg"></a>
+
+					<div class="trends__inner-phone">
+						<img src="images/main-phone.png" style="z-index: -1;">
+					</div>
 				</div>
 
-				<div class="trends__inner-phone">
-					<img src="images/main-phone.png" style="z-index: -1;">
-				</div>
 			</div>
-
-		</div>
-	</section>
+		</section>
+	</div>
 
 	
 
-	<section id="fullpage" style=" height: auto !important; background: #000;">
+<!-- 	<section id="fullpage" style=" height: auto !important; background: #000;">
 
-		
+			
 
-    </section>
+    </section> -->
 
 
 
 
     
 
-
+<section id="lightFullPage" style="margin-top: 100vh; z-index: 100;">
+	<section class="section"></section>
+	<section class="section"></section>
+	<section class="section"></section>
+	<section class="section"></section>
+</section>
 
 
 
@@ -101,6 +108,33 @@
     });
 });
 </script> -->
+
+<script type="text/javascript">
+			var topScroll = 0;
+	$(document).ready(function() {
+		$(window).bind('mousewheel', function(event) {
+		if (event.originalEvent.wheelDelta >= 0) {
+			if (topScroll > 0) {
+				topScroll = topScroll - $(window).height();
+	        	$('body,html').animate({scrollTop: topScroll}, 500);
+			}
+			// event.stopPropagation()
+		}
+		else {
+			if ( (($(document).height() - $(window).height()) - 20 ) > topScroll ) {
+				console.log($(this).scrollTop())
+
+		        topScroll = topScroll + $(window).height();
+
+		        $('body,html').animate({scrollTop: topScroll}, 700);
+		        event.stopPropagation()
+			}
+		}
+		});
+	});
+</script>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.5/lottie.min.js" integrity="sha512-0bCDSnaX8FOD9Mq8WbHcDwshXwCB5V4EP+UBu87WQgga2b7lAsuEbaSmIZjH/XEmNhJuhrPbFHemre5HZwrk9w==" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	var animation = bodymovin.loadAnimation({
