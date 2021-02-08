@@ -32,6 +32,9 @@ h1,h2,h3,h4,h5,h6,p{
 	height: 100vh;
 	background: linear-gradient(yellow, blue);
 	box-sizing: border-box;
+	display: flex;
+    justify-content: center;
+    align-items: center;
 }
 body {
 	overflow-y: hidden;

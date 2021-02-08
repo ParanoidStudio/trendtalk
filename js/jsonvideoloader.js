@@ -18,7 +18,7 @@ $(document).ready(() => {
 	initialPageBuild();
 
 	loadVideos(12);
-	// setTimeout( loadVideos(85), 1000);
+	setTimeout( loadVideos(85), 1000);
 });
 
 
@@ -112,7 +112,7 @@ function initialPageBuild(){
 			// 
 			$("[data-page='" + i + "']").append(
 			"<div class='trends-videos__item'>" +
-				"<video data-vid='"+ (id%3) +"' data-id='"+ videoCount +"' src='' controls></video>" + // src
+				"<video poster='' data-vid='"+ (id%3) +"' data-id='"+ videoCount +"' src='' controls></video>" + // src
 					"<div class='video-info'>" +
 						"<div class='views__inner'>" +
 							"<p class='views-word'><span class='views_amount'>Просмотры:</span></p>" +
@@ -216,6 +216,7 @@ function buildNextPage() {
 	for(let j = 0; j < 3; j++){
 		let v = videos[(currPage - 1) * 3 + j];
 		$("[data-pg='"+currPage+"'] [data-vid='"+j+"']").attr("src", v.videoLink);
+		$("[data-pg='"+currPage+"'] [data-vid='"+j+"']").attr("poster", v.originCover);
 		$("[data-pg='"+currPage+"'] [data-views='"+j+"']").text(v.videoViews);
 
 		for(let hash in v.videoHash){
