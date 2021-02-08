@@ -215,7 +215,7 @@ function buildNextPage() {
 
 	for(let j = 0; j < 3; j++){
 		let v = videos[(currPage - 1) * 3 + j];
-		$("[data-pg='"+currPage+"'] [data-vid='"+j+"']").attr("src", v.videoLink);
+		// $("[data-pg='"+currPage+"'] [data-vid='"+j+"']").attr("src", v.videoLink);
 		$("[data-pg='"+currPage+"'] [data-vid='"+j+"']").attr("poster", v.originCover);
 		$("[data-pg='"+currPage+"'] [data-views='"+j+"']").text(v.videoViews);
 
