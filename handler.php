@@ -73,6 +73,7 @@ if (isset($_POST['video']) && isset($_POST['amount'])) {
 			$video[$key2]['videoHash'] = $hashArr;
 			$video[$key2]['videoAuthor'] = $value_2->author->uniqueId;
 			$video[$key2]['videoId'] = $value_2->id;
+			$video[$key2]['originCover'] = $value_2->video->originCover;
 		}
 	}
 
