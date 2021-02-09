@@ -14,7 +14,7 @@ $(window).bind('mousewheel', function(event) {
             setTimeout(updatePages(currPage), 800);
             console.log("scrolling up");
 
-            topScroll = topScroll - $('body .section').height(); // - 0.4000244140625
+            topScroll = topScroll - Math.floor($('body .section').height());
             $('body,html').animate({scrollTop: topScroll}, 500); // 700
             scrolling = 1;
         }
@@ -32,7 +32,7 @@ $(window).bind('mousewheel', function(event) {
             setTimeout(updatePages(currPage), 800);
             console.log("scrolling down");
             
-            topScroll = topScroll + $('body .section').height(); // + 0.4000244140625
+            topScroll = topScroll + Math.floor($('body .section').height());
             $('body,html').animate({scrollTop: topScroll}, 500); // 500 
             scrolling = 1;
             setTimeout(function(){scrolling = 0},500);
