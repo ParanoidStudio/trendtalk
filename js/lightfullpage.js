@@ -8,39 +8,37 @@ $(window).bind('mousewheel', async function(event) {
         if (topScroll > 0) {
 
             
-            console.log("scrolling up");
+            console.log("II.scrolling up");
             
             topScroll = topScroll - Math.floor($('body .section').height());
             scrolling = 1;
-
+            currPage--; 
             $('body,html').animate({scrollTop: topScroll}, 500, ()=>{
-                scrolling = 0;
-                currPage--;
-                console.log("After dark the sun've risen.");
+                console.log("II.a after scroll page" + currPage);
                 if(currPage == currPage - currPage%blockSize){
                     updatePages();
                 }
+                scrolling = 0;
             }); // 700
-            
         }    
     }
         
     else {
-        if ( ( ($(document).height() - $(window).height()) - 20 ) > topScroll && currPage < supPage) {
+        if ( !scrolling && ( ($(document).height() - $(window).height()) - 20 ) > topScroll && currPage < supPage) {
 
-            console.log("scrolling down");
+            console.log("I. scrolling down");
 
             topScroll = topScroll + Math.floor($('body .section').height());
-    
+            currPage++;
             scrolling = 1;
+            event.stopPropagation();
             //setTimeout(function(){scrolling = 0},500);  // вот это может вызывать лаги;
             $('body,html').animate({scrollTop: topScroll}, 500, ()=>{
-                scrolling = 0;
-                currPage++;
-                console.log("After dark the light`s come.");
+                console.log("I.a after scroll page"+ currPage);
                 if(currPage == currPage - currPage%blockSize + 1){
                     updatePages();
                 }
+                scrolling = 0;
             });
         }
     }

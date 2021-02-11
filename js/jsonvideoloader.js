@@ -5,7 +5,7 @@ var vidAmount = 0;
 var clearFix = $("#clearfix");
 var vidCnt = 0;
 var videoCount = 0;
-var blockSize = 4;
+var blockSize = 6;
 var prevId;
 var supPage = 0;
 
@@ -14,11 +14,12 @@ var animationpl = [];
 
 
 document.addEventListener('DOMContentLoaded', async function(){
-	console.log("starting");
+	
+	console.log("0. starting");
 
 	let interval = setInterval(()=>{
 		getFeed(100);
-	}, 10000);
+	}, 20000);
 	
 	let feedProm = new Promise((resolve, reject)=>{
 		$.ajax({
@@ -26,11 +27,11 @@ document.addEventListener('DOMContentLoaded', async function(){
 			url: "handler.php",
 			data: {
 				video: true,
-				amount: 18,
+				amount: 40,
 			},
 			success: function (response) {
 				let newVideos = JSON.parse(response);
-				console.log("Videos loaded successfully!");
+				console.log("1. Videos loaded successfully!");
 				
 				for(let k in newVideos){
 					let flag = true;
@@ -56,6 +57,7 @@ document.addEventListener('DOMContentLoaded', async function(){
 		});});
 	await feedProm;
 	updatePages(0);
+	getFeed(100);
 });
 
 
@@ -134,7 +136,7 @@ function getFeed(amnt) {
 
 function updatePages(cp = currPage) {
 
-	console.log("updating sections");
+	console.log("2. updating pages id=" + cp);
 
 	if(cp < 0) return;
 	
@@ -148,14 +150,16 @@ function updatePages(cp = currPage) {
 	let temp = blockLeader + blockSize;
 
 	if(oldForClean > 0) {
+		console.log("2.1 cleaning old");
 		for(let i = 0; i < blockSize; ++i)
-		for(let i = 0; j < 3; ++j) {                                  // Если все совсем плохо, то здесь сделать один цикл
+		for(let j = 0; j < 3; ++j) {                                  // Если все совсем плохо, то здесь сделать один цикл
 			$("[data-pg='"+(oldForClean - i)+"'] [data-vid='"+j+"']").attr("src", "#");
 		}
 	}
 
 	if(newForClean < supPage){                      // Не расчитывает на то, что страниц может загрузиться недостаточно
 													// для формирования полного блока
+		console.log("2.2 cleaning new");
 		for(let i = 0; i < blockSize; ++i)
 		for(let j = 0; j < 3; ++j){
 			$("[data-pg='"+(newForClean + i)+"'] [data-vid='"+j+"']").attr("src", "#");
@@ -164,67 +168,27 @@ function updatePages(cp = currPage) {
 
 	for(let i = blockLeader - blockSize*2 + 1; i <= temp; ++i){
 		
-		if(i == blockLeader - blockSize) {
-			i += blockSize; continue;
-		}
+		console.log("2.3 preupdate i="+i);
+		
 		if(i <= 0) {
 			i += blockSize*2 - 1; continue;
 		}
 		
 		if(i > supPage) {
+			console.log("2.3 try building new i=" + i);
 			buildNewPage();	
 		}
 
+		console.log("2.3 try filling i=" + i);
 		fillPage(i);
 
+		if(i == blockLeader - blockSize) {
+			console.log("2.3 skipping i="+i);
+			i += blockSize;
+		}
 	}
 
 }
-
-
-// function updatePages(cp = currPage){
-// 	console.log("updating");
-// 	if(	cp < 0) return;
-
-// 	let blockLeader = cp + cp%2;
-
-// 	if(blockLeader - 5 > 0){
-// 		console.log("cleaning old");
-// 		for(let i = 0; i < 3; i++){
-// 			$("[data-pg='"+ (blockLeader - 5)+"'] [data-vid='"+i+"']").attr("src", "");
-// 			$("[data-pg='"+ (blockLeader - 4)+"'] [data-vid='"+i+"']").attr("src", "");
-// 		}
-// 	}
-
-// 	if(blockLeader + 3 < supPage){
-// 		console.log("clearing new");
-// 		for(let i = 0; i < 3; i++){
-// 			$("[data-pg='"+ (blockLeader + 3)+"'] [data-vid='"+i+"']").attr("src", "");
-// 			$("[data-pg='"+ (blockLeader + 4)+"'] [data-vid='"+i+"']").attr("src", "");
-// 		}
-// 	}
-
-
-// 	for(let i = blockLeader - 3; i <= blockLeader + 2; i++){
-// 		if(i + i%2 == blockLeader || i <= 0) continue;
-
-// 		if(i > blockLeader && $("[data-pg='"+i+"']").length == 0){
-// 			buildNewPage(i);
-// 		}
-
-// 		fillPage(i); 
-// 	}
-
-// }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -235,7 +199,7 @@ function updatePages(cp = currPage) {
 function buildNewPage(){
 
 	supPage++;
-	console.log("building sections");
+	console.log("3. building page=" + supPage);
 
 	let isGray = '';
 	if((supPage) % 2==0) isGray = 'gray';
@@ -247,7 +211,10 @@ function buildNewPage(){
 
 		for (let i = 0; i < 3; i++) {
 
+			console.log("3.1 building video i=" + i);
 			let v = videos[(supPage - 1) * 3 + i];
+			console.log("3.1.1 v...");
+			console.log(v);
 
 			videoCount++;
 			// 
@@ -384,7 +351,7 @@ function buildNewPage(){
 
 function fillPage(cp) {
 	
-	console.log("filli+++" + cp);
+	console.log("4. filling page=" + cp);
 
 	for(let i = 0; i < 3; i++){
 
