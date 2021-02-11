@@ -34,7 +34,7 @@ $(window).bind('mousewheel', async function(event) {
     
             scrolling = 1;
             //setTimeout(function(){scrolling = 0},500);  // вот это может вызывать лаги;
-            $('body,html').animate({scrollTop: topScroll}, 5000, ()=>{
+            $('body,html').animate({scrollTop: topScroll}, 500, ()=>{
                 scrolling = 0;
                 currPage++;
                 console.log("After dark the light`s come.");
