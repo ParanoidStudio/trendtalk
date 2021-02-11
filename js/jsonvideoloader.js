@@ -5,29 +5,79 @@ var vidAmount = 0;
 var clearFix = $("#clearfix");
 var vidCnt = 0;
 var videoCount = 0;
-
+var blockSize = 4;
+var prevId;
 var supPage = 0;
 
 
 var animationpl = [];
 
 
-
-
-$(document).ready(() => {
-	
-	getFeed(13);
-	console.log("entry");
+document.addEventListener('DOMContentLoaded', async function(){
+	console.log("starting");
 
 	let interval = setInterval(()=>{
 		getFeed(100);
-	}, 2000);
-
-	let initialTimeout = setTimeout(() => {
-		updatePages(0);
-	}, 1000);
-
+	}, 10000);
+	
+	let feedProm = new Promise((resolve, reject)=>{
+		$.ajax({
+			type: "POST",
+			url: "handler.php",
+			data: {
+				video: true,
+				amount: 18,
+			},
+			success: function (response) {
+				let newVideos = JSON.parse(response);
+				console.log("Videos loaded successfully!");
+				
+				for(let k in newVideos){
+					let flag = true;
+					for(let j in videos){
+						if(newVideos[k].videoId == videos[j].videoId 
+							|| newVideos[k].videoLink == null){
+								flag = false;
+								break;
+							}
+					}
+					if(flag)
+						videos[vidCnt++] = newVideos[k];
+				}
+	
+				//console.log(videos);
+				resolve();
+				
+			},
+			error: function (responce) {
+				console.log("Video loading failed! Ne supper!");
+				reject();
+			}
+		});});
+	await feedProm;
+	updatePages(0);
 });
+
+
+
+
+// $(document).ready(() => {
+
+// 	console.log("starting");
+
+// 	let interval = setInterval(()=>{
+// 		getFeed(100);
+// 	}, 3000);
+	
+// 	let feedProm = new Promise((resolve, reject)=>{getFeed(17);resolve();});
+// 	await feedProm;
+
+// 	updatePages(0);
+
+// });
+
+
+
 
 
 
@@ -35,6 +85,7 @@ $(document).ready(() => {
 
 
 function getFeed(amnt) {
+	console.log("getting feed");
 	amnt += 1;
     $.ajax({
         type: "POST",
@@ -45,7 +96,7 @@ function getFeed(amnt) {
         },
         success: function (response) {
             let newVideos = JSON.parse(response);
-            //console.log("Videos loaded successfully!");
+            
 			
 			for(let k in newVideos){
 				let flag = true;
@@ -59,9 +110,9 @@ function getFeed(amnt) {
 				if(flag)
 					videos[vidCnt++] = newVideos[k];
 			}
-
+			console.log("Videos loaded successfully!" + videos.length);
 			//console.log(videos);
-
+			
         },
         error: function (responce) {
             console.log("Video loading failed! Ne supper!");
@@ -77,43 +128,94 @@ function getFeed(amnt) {
 
 
 
+
 // обновляем секции
 
-function updatePages(cp = currPage){
-	console.log("updating");
-	if(	cp < 0) return;
 
-	let blockLeader = cp + cp%2;
+function updatePages(cp = currPage) {
 
-	if(blockLeader - 5 > 0){
-		console.log("cleaning old");
-		for(let i = 0; i < 3; i++){
-			$("[data-pg='"+ (blockLeader - 5)+"'] [data-vid='"+i+"']").attr("src", "");
-			$("[data-pg='"+ (blockLeader - 4)+"'] [data-vid='"+i+"']").attr("src", "");
+	console.log("updating sections");
+
+	if(cp < 0) return;
+	
+	let blockLeader = 0;
+	if(cp > 0){
+		blockLeader = cp + blockSize - cp%blockSize;
+	}
+	
+	let oldForClean = blockLeader - blockSize*2;
+	let newForClean = blockLeader + blockSize + 1;
+	let temp = blockLeader + blockSize;
+
+	if(oldForClean > 0) {
+		for(let i = 0; i < blockSize; ++i)
+		for(let i = 0; j < 3; ++j) {                                  // Если все совсем плохо, то здесь сделать один цикл
+			$("[data-pg='"+(oldForClean - i)+"'] [data-vid='"+j+"']").attr("src", "#");
 		}
 	}
 
-	if(blockLeader + 3 < supPage){
-		console.log("clearing new");
-		for(let i = 0; i < 3; i++){
-			$("[data-pg='"+ (blockLeader + 3)+"'] [data-vid='"+i+"']").attr("src", "");
-			$("[data-pg='"+ (blockLeader + 4)+"'] [data-vid='"+i+"']").attr("src", "");
+	if(newForClean < supPage){                      // Не расчитывает на то, что страниц может загрузиться недостаточно
+													// для формирования полного блока
+		for(let i = 0; i < blockSize; ++i)
+		for(let j = 0; j < 3; ++j){
+			$("[data-pg='"+(newForClean + i)+"'] [data-vid='"+j+"']").attr("src", "#");
 		}
 	}
 
-
-	for(let i = blockLeader - 3; i <= blockLeader + 2; i++){
-		if(i + i%2 == blockLeader || i <= 0) continue;
-
-		if(i > blockLeader && $("[data-pg='"+i+"']").length == 0){
-			buildNewPage(i);
+	for(let i = blockLeader - blockSize*2 + 1; i <= temp; ++i){
+		
+		if(i == blockLeader - blockSize) {
+			i += blockSize; continue;
+		}
+		if(i <= 0) {
+			i += blockSize*2 - 1; continue;
+		}
+		
+		if(i > supPage) {
+			buildNewPage();	
 		}
 
-		fillPage(i); 
+		fillPage(i);
+
 	}
 
 }
 
+
+// function updatePages(cp = currPage){
+// 	console.log("updating");
+// 	if(	cp < 0) return;
+
+// 	let blockLeader = cp + cp%2;
+
+// 	if(blockLeader - 5 > 0){
+// 		console.log("cleaning old");
+// 		for(let i = 0; i < 3; i++){
+// 			$("[data-pg='"+ (blockLeader - 5)+"'] [data-vid='"+i+"']").attr("src", "");
+// 			$("[data-pg='"+ (blockLeader - 4)+"'] [data-vid='"+i+"']").attr("src", "");
+// 		}
+// 	}
+
+// 	if(blockLeader + 3 < supPage){
+// 		console.log("clearing new");
+// 		for(let i = 0; i < 3; i++){
+// 			$("[data-pg='"+ (blockLeader + 3)+"'] [data-vid='"+i+"']").attr("src", "");
+// 			$("[data-pg='"+ (blockLeader + 4)+"'] [data-vid='"+i+"']").attr("src", "");
+// 		}
+// 	}
+
+
+// 	for(let i = blockLeader - 3; i <= blockLeader + 2; i++){
+// 		if(i + i%2 == blockLeader || i <= 0) continue;
+
+// 		if(i > blockLeader && $("[data-pg='"+i+"']").length == 0){
+// 			buildNewPage(i);
+// 		}
+
+// 		fillPage(i); 
+// 	}
+
+// }
 
 
 
@@ -130,26 +232,26 @@ function updatePages(cp = currPage){
 
 
 // Строим новые секции
-function buildNewPage(number){
+function buildNewPage(){
 
 	supPage++;
-	console.log("building");
+	console.log("building sections");
 
 	let isGray = '';
-	if((number) % 2==0) isGray = 'gray';
+	if((supPage) % 2==0) isGray = 'gray';
 		
-		$('#lightFullPage').append("<div class='section trends-videos "+isGray+"' data-pg='"+number+"'>" +
+		$('#lightFullPage').append("<div class='section trends-videos "+isGray+"' data-pg='"+supPage+"'>" +
 								"<div class='container'>" +
-									"<div class='trends-videos__inner' data-page='" + number + "'>");
+									"<div class='trends-videos__inner' data-page='" + supPage + "'>");
 		
 
 		for (let i = 0; i < 3; i++) {
 
-			let v = videos[(number - 1) * 3 + i];
+			let v = videos[(supPage - 1) * 3 + i];
 
 			videoCount++;
 			// 
-			$("[data-page='" + number + "']").append(
+			$("[data-page='" + supPage + "']").append(
 			"<div class='trends-videos__item'>" +
 				"<video data-vid='"+ i +"' data-id='"+ videoCount +"' src='' poster='" + v.originCover + "' controls></video>" + // src
 					"<div class='video-info'>" +
@@ -244,8 +346,29 @@ function buildNewPage(number){
 		  });
 		}
 
-
 		$('#lightFullPage').append("</div></div></div>");
+
+
+		for(let vidos of document.body.querySelectorAll('[data-pg="'+supPage+'"] video')){
+			vidos.addEventListener('playing', function(){
+				let id = this.dataset.id;
+				if(id !== prevId){
+					var volume = $('body video[data-id="'+prevId+'"')[0].volume;
+					var muted = $('body video[data-id="'+prevId+'"')[0].muted;
+					$('body video[data-id="'+id+'"')[0].volume = volume;
+					$('body video[data-id="'+id+'"')[0].muted = muted;
+				}
+
+				prevId = id;
+
+				$('body video').each(function() {
+					if ($(this).data('id') != id) {
+						$(this).trigger('pause');
+					}
+				});
+			});
+		}
+
 	}
 
 
@@ -257,16 +380,7 @@ function buildNewPage(number){
 
 
 
-
-
-
-
-
-
-
-
-
-// Добавление инфы в html
+// Добавление src в видосы
 
 function fillPage(cp) {
 	
@@ -280,11 +394,6 @@ function fillPage(cp) {
 			
     return true;
 }
-
-
-
-
-
 
 
 
