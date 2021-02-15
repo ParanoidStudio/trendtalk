@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', async function(){
 	
 	console.log("0. starting");
 
-	let interval = setInterval(()=>{
-		getFeed(100);
-	}, 20000);
+	// let interval = setInterval(()=>{
+	// 	getFeed(100);
+	// }, 20000);
 	
 	let feedProm = new Promise((resolve, reject)=>{
 		$.ajax({
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async function(){
 			url: "handler.php",
 			data: {
 				video: true,
-				amount: 40,
+				amount: 100,
 			},
 			success: function (response) {
 				let newVideos = JSON.parse(response);
@@ -187,7 +187,7 @@ function updatePages(cp = currPage) {
 			i += blockSize;
 		}
 	}
-
+	scrolling = 0;
 }
 
 
@@ -315,6 +315,7 @@ function buildNewPage(){
 
 		$('#lightFullPage').append("</div></div></div>");
 
+		//$('.trends-videos__item').height($('.trends-videos__item').height())
 
 		for(let vidos of document.body.querySelectorAll('[data-pg="'+supPage+'"] video')){
 			vidos.addEventListener('playing', function(){

@@ -17,8 +17,9 @@ $(window).bind('mousewheel', async function(event) {
                 console.log("II.a after scroll page" + currPage);
                 if(currPage == currPage - currPage%blockSize){
                     updatePages();
+                } else {
+                    scrolling = 0;
                 }
-                scrolling = 0;
             }); // 700
         }    
     }
@@ -37,8 +38,9 @@ $(window).bind('mousewheel', async function(event) {
                 console.log("I.a after scroll page"+ currPage);
                 if(currPage == currPage - currPage%blockSize + 1){
                     updatePages();
+                }else{
+                    scrolling = 0;   
                 }
-                scrolling = 0;
             });
         }
     }

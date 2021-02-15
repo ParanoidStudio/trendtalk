@@ -186,12 +186,12 @@ span.header-link_text{
 .trends-videos__item{
 	position: relative;
 	width: 27%;
-	height: calc((100% * 16)/9);
 }
 .trends-videos__item video{
 	width: 100%;
 	border-radius: 30px;
-	height: calc((100% * 16)/9);
+	height: 100%;
+	background: #1b1b1b;
 }
 
 .video-info{
