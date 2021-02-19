@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', async function(){
 	
 	console.log("0. starting");
 
-	// let interval = setInterval(()=>{
-	// 	getFeed(100);
-	// }, 20000);
+	let interval = setInterval(()=>{
+		getFeed(100);
+	}, 10000);
 	
 	let feedProm = new Promise((resolve, reject)=>{
 		$.ajax({
