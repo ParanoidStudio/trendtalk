@@ -25,7 +25,7 @@ $(window).bind('mousewheel', async function(event) {
     }
         
     else {
-        if ( !scrolling && ( ($(document).height() - $(window).height()) - 20 ) > topScroll && currPage < supPage) {
+        if ( !scrolling && ( ($(document).height() - $(window).height()) - 20 ) > topScroll && currPage <= supPage) {
 
             console.log("I. scrolling down");
 
@@ -36,7 +36,7 @@ $(window).bind('mousewheel', async function(event) {
             //setTimeout(function(){scrolling = 0},500);  // вот это может вызывать лаги;
             $('body,html').animate({scrollTop: topScroll}, 500, ()=>{
                 console.log("I.a after scroll page"+ currPage);
-                if(currPage == currPage - currPage%blockSize + 1){
+                if(currPage == currPage - currPage%blockSize + 1 || currPage == supPage - 1){
                     updatePages();
                 }else{
                     scrolling = 0;   

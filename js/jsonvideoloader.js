@@ -170,6 +170,8 @@ function updatePages(cp = currPage) {
 		
 		console.log("2.3 preupdate i="+i);
 		
+		if(i * 3 - 3 >= videos.length) break;             //////////////////////////// WARNING  MB LOMAET //////////////////////
+
 		if(i <= 0) {
 			i += blockSize*2 - 1; continue;
 		}
